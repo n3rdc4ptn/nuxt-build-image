@@ -1,11 +1,9 @@
 image: docker:dind
 
-before_script:
-    - docker info
-
 build_image:
     script:
-        - docker build -t nuxt-build-image:$CI_COMMIT_REF_NAME .
-workflow:
-    rules:
-        - if: $CI_COMMIT_TAG
+        - docker build -t $CI_REGISTRY/nuxt-build-image:$CI_COMMIT_REF_NAME .
+        - docker push $CI_REGISTRY/nuxt-build-image:$CI_COMMIT_REF_NAME
+# workflow:
+#     rules:
+#         - if: $CI_COMMIT_TAG
