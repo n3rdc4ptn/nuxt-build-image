@@ -1,17 +1,33 @@
+stages:
+    - build
+    - release
+
+variables:
+    CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+
 before_script:
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
 
 
-build_image:
+build:
     tags:
         - docker
     stage: build
     script:
-        - docker build -t $CI_REGISTRY/moritzreich/nuxt-build-image:$CI_COMMIT_REF_NAME .
-        - docker tag $CI_REGISTRY/moritzreich/nuxt-build-image:$CI_COMMIT_REF_NAME $CI_REGISTRY/moritzreich/nuxt-build-image:latest
-        - docker push $CI_REGISTRY/moritzreich/nuxt-build-image:latest
+        - docker build --pull -t $CONTAINER_TEST_IMAGE .
+        - docker push $CONTAINER_TEST_IMAGE
+release:
+    tags:
+        - docker
+    stage: release
+    script:
+        - docker pull $CONTAINER_TEST_IMAGE
+        - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+        - docker push $CONTAINER_RELEASE_IMAGE
+        
 workflow:
     rules:
         - if: $CI_COMMIT_TAG
