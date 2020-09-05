@@ -10,6 +10,7 @@ build_image:
     stage: build
     script:
         - docker build -t $CI_REGISTRY/moritzreich/nuxt-build-image:$CI_COMMIT_REF_NAME .
+        - docker tag $CI_REGISTRY/moritzreich/nuxt-build-image:$CI_COMMIT_REF_NAME $CI_REGISTRY/moritzreich/nuxt-build-image:latest
         - docker push $CI_REGISTRY/moritzreich/nuxt-build-image:$CI_COMMIT_REF_NAME
 workflow:
     rules:
