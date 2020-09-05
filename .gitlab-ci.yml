@@ -1,4 +1,5 @@
-tags: docker
+tags:
+    - docker
 before_script:
     - echo $CI_REGISTRY
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
