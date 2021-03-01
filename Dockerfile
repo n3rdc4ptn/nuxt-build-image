@@ -1,4 +1,4 @@
-FROM ubuntu:20.10
+FROM node:14
 
 WORKDIR /build
 
